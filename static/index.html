@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CartSpark — E-Commerce Studio Powered by Google Gemma 2</title>
+  <meta name="description" content="Autonomous listing writer, pricing optimizer, and customer review copilot for marketplace sellers powered by Google Gemma 2. Zero API bills, 100% private.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f59e0b'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="brand-group">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>CartSpark</h1>
+        <span class="brand-badge">Google Gemma 2 Core</span>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="engine-pill" id="engineStatusPill">
+        <span class="status-dot"></span>
+        <span id="engineStatusText">Gemma 2 (2B) &bull; Edge Engine</span>
+      </div>
+      <button class="btn-secondary" id="btnOpenCatalog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+        <span>Catalog (<span id="catalogCount">0</span>)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sub Navigation Mode Bar -->
+  <nav class="sub-nav">
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-tab="listing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        <span>Listing Studio</span>
+      </button>
+      <button class="nav-tab" data-tab="pricing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        <span>Price &amp; Margin Optimizer</span>
+      </button>
+      <button class="nav-tab" data-tab="review">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Review Copilot</span>
+      </button>
+    </div>
+
+    <div class="presets-group">
+      <span class="preset-label">Presets:</span>
+      <button class="preset-chip" data-preset="ceramic">Artisan Pour-Over</button>
+      <button class="preset-chip" data-preset="leather">Leather Cardholder</button>
+      <button class="preset-chip" data-preset="candle">Soy Candle</button>
+    </div>
+  </nav>
+
+  <!-- Main Workspace -->
+  <main class="workspace-container">
+
+    <!-- LEFT COLUMN: STUDIO INPUT -->
+    <section class="studio-card">
+
+      <!-- SECTION 1: LISTING STUDIO FORM -->
+      <div id="sectionListing">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Product Specifications</h2>
+            <p class="panel-subtitle">Feed raw product details to generate platform-tuned listings with Gemma 2</p>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+          <!-- Target Marketplace -->
+          <div class="form-group">
+            <label class="form-label">
+              <span>Target Marketplace</span>
+              <span class="label-hint">Formats titles &amp; tag lengths automatically</span>
+            </label>
+            <div class="platform-selector">
+              <button type="button" class="platform-btn active" data-platform="Etsy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Etsy</span>
+              </button>
+              <button type="button" class="platform-btn" data-platform="Amazon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                  <rect x="1" y="3" width="22" height="5"></rect>
+                  <line x1="10" y1="12" x2="14" y2="12"></line>
+                </svg>
+                <span>Amazon</span>
+              </button>
+              <button type="button" class="platform-btn" data-platform="Shopify">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Shopify</span>
+              </button>
+              <button type="button" class="platform-btn" data-platform="eBay">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+                <span>eBay</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Product Name -->
+          <div class="form-group">
+            <label class="form-label" for="inputProductName">
+              <span>Product Name / Concept</span>
+              <span class="label-hint">Required</span>
+            </label>
+            <input type="text" id="inputProductName" class="text-input" placeholder="e.g. Obsidian Ceramic Pour-Over Dripper">
+          </div>
+
+          <!-- Category & Materials Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="inputCategory">Category</label>
+              <input type="text" id="inputCategory" class="text-input" placeholder="e.g. Kitchenware &amp; Coffee">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inputMaterials">Primary Materials</label>
+              <input type="text" id="inputMaterials" class="text-input" placeholder="e.g. Stoneware clay, matte glaze">
+            </div>
+          </div>
+
+          <!-- Tone of Voice & Audience Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="selectTone">Tone of Voice</label>
+              <select id="selectTone" class="select-input">
+                <option value="Artisan &amp; Conversational">Artisan &amp; Conversational (Etsy Classic)</option>
+                <option value="Luxury &amp; Elevated">Luxury &amp; Minimalist High-End</option>
+                <option value="Conversion-Focused &amp; Bold">Direct &amp; Benefit-Heavy (Amazon Top-Seller)</option>
+                <option value="Eco-Friendly &amp; Mindful">Sustainable &amp; Earth-Conscious</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inputAudience">Target Audience</label>
+              <input type="text" id="inputAudience" class="text-input" placeholder="e.g. Specialty coffee hobbyists">
+            </div>
+          </div>
+
+          <!-- Key Features & Specs -->
+          <div class="form-group">
+            <label class="form-label">
+              <span>Key Features / Differentiators</span>
+              <span class="label-hint">Press Enter to add tags</span>
+            </label>
+            <div class="tags-input-container" id="featuresContainer">
+              <span class="tag-badge">
+                <span>Hand-thrown stoneware</span>
+                <button type="button" class="remove-tag" data-tag="Hand-thrown stoneware">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </span>
+              <span class="tag-badge">
+                <span>Internal flow spiral grooves</span>
+                <button type="button" class="remove-tag" data-tag="Internal flow spiral grooves">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+              </span>
+              <input type="text" id="inputFeatureTag" class="tag-input-inline" placeholder="Add feature...">
+            </div>
+          </div>
+
+          <!-- Dimensions / Physical Specs -->
+          <div class="form-group">
+            <label class="form-label" for="inputDimensions">
+              <span>Dimensions / Sizing</span>
+              <span class="label-hint">Optional</span>
+            </label>
+            <input type="text" id="inputDimensions" class="text-input" placeholder="e.g. 11.5cm diameter x 9.2cm height, 310g">
+          </div>
+
+          <!-- Submit Button -->
+          <button type="button" class="btn-generate" id="btnGenerateListing">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            <span id="btnGenerateText">Generate Listing with Gemma 2</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SECTION 2: PRICING OPTIMIZER FORM -->
+      <div id="sectionPricing" style="display: none;">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Price &amp; Margin Engine</h2>
+            <p class="panel-subtitle">Calculate profitable retail charm pricing and fee overhead for marketplace selling</p>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="inputCostPrice">Cost of Goods (COGS) $</label>
+              <input type="number" id="inputCostPrice" class="text-input" value="12.50" step="0.5">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inputShippingCost">Packaging &amp; Shipping $</label>
+              <input type="number" id="inputShippingCost" class="text-input" value="4.50" step="0.5">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="inputPlatformFee">Platform &amp; Payment Fee %</label>
+              <input type="number" id="inputPlatformFee" class="text-input" value="9.5" step="0.5">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inputTargetMargin">Desired Net Margin %</label>
+              <input type="number" id="inputTargetMargin" class="text-input" value="45.0" step="1">
+            </div>
+          </div>
+
+          <button type="button" class="btn-generate" id="btnCalculatePricing">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            <span>Optimize Price with Gemma Intelligence</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SECTION 3: REVIEW COPILOT FORM -->
+      <div id="sectionReview" style="display: none;">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Review &amp; Customer Copilot</h2>
+            <p class="panel-subtitle">De-escalate negative feedback or generate heartfelt responses to build customer loyalty</p>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Review Rating</label>
+            <div class="rating-stars-input" id="starRatingContainer">
+              <button type="button" class="star-btn active" data-rating="1">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </button>
+              <button type="button" class="star-btn active" data-rating="2">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </button>
+              <button type="button" class="star-btn" data-rating="3">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </button>
+              <button type="button" class="star-btn" data-rating="4">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </button>
+              <button type="button" class="star-btn" data-rating="5">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </button>
+              <span id="starRatingLabel" style="font-size: 0.8rem; color: var(--text-muted); margin-left: 0.5rem;">2 Stars (Needs de-escalation)</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="inputCustomerName">Customer Name</label>
+              <input type="text" id="inputCustomerName" class="text-input" value="Jordan S.">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="inputReviewProduct">Product Name</label>
+              <input type="text" id="inputReviewProduct" class="text-input" value="Artisan Ceramic Pour-Over Dripper">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inputReviewText">Customer Review / Message</label>
+            <textarea id="inputReviewText" class="textarea-input" placeholder="Paste the customer's review here...">The dripper arrived 2 days after estimated shipping date and the packaging box was slightly dented. The dripper itself works fine but this was meant to be a gift.</textarea>
+          </div>
+
+          <button type="button" class="btn-generate" id="btnGenerateReviewReply">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>Draft Resolution Response</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: PRODUCTION DESK & OUTPUT -->
+    <section class="output-card">
+
+      <!-- Metrics Status Strip -->
+      <div class="metrics-strip">
+        <div class="metric-item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Latency:</span>
+          <span class="metric-value" id="valLatency">0.64s</span>
+        </div>
+        <div class="metric-item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <span>Model:</span>
+          <span class="metric-value" id="valModel">Google Gemma 2 (2B)</span>
+        </div>
+        <div class="metric-item">
+          <span>Side Hustle Savings:</span>
+          <span class="cost-saved-badge" id="valSavings">+$0.035 / run</span>
+        </div>
+      </div>
+
+      <!-- Action & View Toolbar -->
+      <div class="actions-toolbar">
+        <div class="output-views-toggle">
+          <button type="button" class="view-btn active" id="btnViewFormatted">Formatted Preview</button>
+          <button type="button" class="view-btn" id="btnViewMarkdown">Raw Markdown</button>
+        </div>
+
+        <div class="action-buttons">
+          <button type="button" class="btn-icon" id="btnCopyAll" title="Copy entire listing">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>Copy All</span>
+          </button>
+          <button type="button" class="btn-icon" id="btnSaveCatalog" title="Save to local catalog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            <span>Save to Catalog</span>
+          </button>
+          <button type="button" class="btn-icon" id="btnDownloadMd" title="Export Markdown file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- OUTPUT CONTAINER -->
+      <div class="output-content-area" id="outputArea">
+
+        <!-- Formatted View Content -->
+        <div id="formattedViewContainer" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          
+          <!-- Box 1: Title -->
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>Optimized Title</span>
+              <span class="char-counter" id="titleCharCount">118 Chars</span>
+            </div>
+            <div class="output-title-text" id="displayTitle">
+              Obsidian Ceramic Pour-Over Dripper | Handcrafted Stoneware Coffee Filter Cone - Minimalist Kitchen Gift
+            </div>
+          </div>
+
+          <!-- Box 2: 13 SEO Search Tags Matrix -->
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>Etsy / Marketplace 13 SEO Tags (Click to Copy Any Tag)</span>
+              <button type="button" class="btn-icon" id="btnCopyTags" style="padding: 2px 8px; font-size: 0.7rem;">Copy All Tags</button>
+            </div>
+            <div class="tag-matrix" id="displayTagsMatrix">
+              <!-- Dynamically populated chips -->
+            </div>
+          </div>
+
+          <!-- Box 3: 5 Key Value Bullets -->
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>High-Converting Value Bullets</span>
+              <button type="button" class="btn-icon" id="btnCopyBullets" style="padding: 2px 8px; font-size: 0.7rem;">Copy Bullets</button>
+            </div>
+            <ul class="output-bullets-list" id="displayBulletsList">
+              <!-- Dynamically populated bullets -->
+            </ul>
+          </div>
+
+          <!-- Box 4: Story Description -->
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>Product Story &amp; Specifications</span>
+              <button type="button" class="btn-icon" id="btnCopyDesc" style="padding: 2px 8px; font-size: 0.7rem;">Copy Description</button>
+            </div>
+            <div class="output-desc-text" id="displayDescription">
+              <!-- Dynamically populated description -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Raw Markdown View Content -->
+        <div id="markdownViewContainer" class="markdown-view-container">
+          <pre class="raw-markdown-pre" id="displayRawMarkdown"></pre>
+        </div>
+
+        <!-- Pricing Result Container (Hidden until tab clicked / calculated) -->
+        <div id="pricingOutputContainer" style="display: none; flex-direction: column; gap: 1.25rem;">
+          <div class="pricing-grid">
+            <div class="pricing-kpi-card">
+              <span class="kpi-title">Recommended Charm Price</span>
+              <span class="kpi-main-number" id="kpiCharmPrice">$34.95</span>
+              <span class="kpi-subtext">Engineered for marketplace psychology</span>
+            </div>
+            <div class="pricing-kpi-card">
+              <span class="kpi-title">Estimated Net Profit</span>
+              <span class="kpi-main-number" style="color: var(--accent-emerald);" id="kpiNetProfit">+$14.63</span>
+              <span class="kpi-subtext" id="kpiNetMargin">41.9% Net Margin</span>
+            </div>
+          </div>
+
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>Unit Economics Breakdown</span>
+              <span class="char-counter" id="kpiBaseCost">Base Cost: $17.00</span>
+            </div>
+            <div class="profit-breakdown-bar">
+              <div class="bar-cost" id="barCostWidth" style="width: 48%;" title="COGS &amp; Shipping"></div>
+              <div class="bar-fee" id="barFeeWidth" style="width: 10%;" title="Marketplace Fees"></div>
+              <div class="bar-profit" id="barProfitWidth" style="width: 42%;" title="Net Profit"></div>
+            </div>
+            <div class="pricing-legend">
+              <div><span class="legend-dot" style="background: #64748b;"></span> Base Cost: <span id="legBaseCost">$17.00</span></div>
+              <div><span class="legend-dot" style="background: #f43f5e;"></span> Est. Fees: <span id="legFees">$3.32</span></div>
+              <div><span class="legend-dot" style="background: #10b981;"></span> Net Profit: <span id="legProfit">$14.63</span></div>
+            </div>
+          </div>
+
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>Gemma Pricing &amp; Positioning Guidance</span>
+            </div>
+            <div class="output-desc-text" id="displayPricingInsight"></div>
+          </div>
+        </div>
+
+        <!-- Review Output Container (Hidden until review tab used) -->
+        <div id="reviewOutputContainer" style="display: none; flex-direction: column; gap: 1.25rem;">
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>Sentiment &amp; Strategy</span>
+              <span class="cost-saved-badge" id="reviewSentimentBadge">De-escalation &amp; Resolution</span>
+            </div>
+            <div class="output-desc-text" id="displayReviewSnippet" style="font-style: italic; color: var(--text-muted);"></div>
+          </div>
+
+          <div class="output-box">
+            <div class="output-box-header">
+              <span>Gemma Generated Response</span>
+              <button type="button" class="btn-icon" id="btnCopyReviewResponse" style="padding: 2px 8px; font-size: 0.7rem;">Copy Reply</button>
+            </div>
+            <div class="output-desc-text" id="displayReviewReply" style="white-space: pre-line;"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Catalog Drawer Modal -->
+  <div class="drawer-backdrop" id="catalogDrawerBackdrop">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <div>
+          <h3 style="font-size: 1.1rem; font-weight: 700;">Saved Product Catalog</h3>
+          <p style="font-size: 0.78rem; color: var(--text-muted);">Locally stored listings &bull; Zero server data retention</p>
+        </div>
+        <button type="button" class="btn-icon" id="btnCloseCatalog">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <button type="button" class="btn-secondary" id="btnExportCatalogCsv" style="flex: 1; justify-content: center;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Export All as CSV</span>
+        </button>
+        <button type="button" class="btn-secondary" id="btnClearCatalog" style="color: var(--accent-rose);">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          <span>Clear</span>
+        </button>
+      </div>
+
+      <div class="drawer-list" id="catalogList">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
