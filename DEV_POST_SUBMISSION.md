@@ -42,7 +42,7 @@ CartSpark flips this dynamic on its head by running on **Google's open-weight Ge
 
 The complete source code is open-source and structured for easy replication:
 
-**GitHub Repository:** `https://github.com/your-username/cartspark`
+**GitHub Repository:** [github.com/hitesh-kumar123/cartspark-ai](https://github.com/hitesh-kumar123/cartspark-ai)
 
 Key codebase files:
 - `app.py`: High-performance FastAPI server with CORS and REST endpoints.

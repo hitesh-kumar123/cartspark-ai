@@ -61,8 +61,8 @@ While cloud AI APIs (like OpenAI or Anthropic) can assist, they introduce a crip
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/cartspark.git
-cd cartspark
+git clone https://github.com/hitesh-kumar123/cartspark-ai.git
+cd cartspark-ai
 pip install -r requirements.txt
 ```
 
